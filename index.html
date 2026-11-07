@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="kk"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Растрлық және векторлық графика</title>
+<style>
+:root{color-scheme:light;--t:#3b6ea5;--b:#e3f4ff;--g:#e2f8e6;--y:#fff6cc;--p:#ffe3ef;--v:#eee6ff;--o:#ffe9d6;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}body{margin:0;font-family:"Nunito","Trebuchet MS",Arial,sans-serif;background:linear-gradient(135deg,#f1fbff,#fff7fb 60%,#f4fff1);color:var(--t);min-height:100vh}
+nav{display:flex;flex-wrap:wrap;gap:8px;padding:12px;background:#fff;border-bottom:3px solid #cfe9ff;align-items:center;position:sticky;top:0;z-index:5}
+nav button{border:0;border-radius:14px;padding:10px 14px;font:700 15px inherit;font-family:inherit;color:var(--t);cursor:pointer}
+nav button.on{outline:3px solid #9fd0ff}
+.sp{flex:1}
+.c1{background:var(--b)}.c2{background:var(--g)}.c3{background:var(--y)}.c4{background:var(--p)}.c5{background:var(--v)}.c6{background:var(--o)}.c7{background:#d9f5f0}
+main{max-width:980px;margin:auto;padding:18px}
+section{display:none;background:#fff;border-radius:22px;padding:20px;box-shadow:0 6px 20px #bfe0f566}section.on{display:block}
+h2{margin:0 0 10px;font-size:26px}.card{border-radius:18px;padding:14px;margin:10px 0}
+.row{display:flex;gap:16px;flex-wrap:wrap}.row>*{flex:1;min-width:240px}
+.box{height:240px;border-radius:18px;overflow:hidden;display:flex;align-items:center;justify-content:center;border:3px dashed #bfe0ff;background:#fafdff}
+.box>*{transition:transform .1s;transform-origin:50% 50%}
+.lab{text-align:center;font-weight:800;margin-top:6px}
+input[type=range]{width:100%;accent-color:#7cc4ff}
+input[type=text],textarea,select{width:100%;border:2px solid #cfe5f7;border-radius:12px;padding:9px;font:inherit;color:var(--t);background:#fdfeff}
+textarea{min-height:60px}
+.btn{border:0;border-radius:14px;padding:11px 18px;font:800 16px inherit;font-family:inherit;color:var(--t);background:#bfe8c9;cursor:pointer}
+.btn.b{background:#bfe0ff}
+table{width:100%;border-collapse:collapse}td,th{border:2px solid #cfe5f7;padding:8px;vertical-align:top}th{background:var(--b)}
+.slide{display:none;min-height:340px;border-radius:22px;padding:24px;text-align:center}.slide.on{display:block}
+.slide h3{font-size:30px;margin:6px 0}.slide p{font-size:21px;margin:8px 0}.big{font-size:70px}
+.px{display:inline-grid;grid-template-columns:repeat(8,26px);gap:2px}.px i{width:26px;height:26px;display:block;border-radius:3px}
+.chip{display:inline-block;border-radius:30px;padding:8px 16px;margin:4px;font-weight:800;font-size:19px}
+.fb{display:flex;gap:10px;flex-wrap:wrap}.fb>div{flex:1;min-width:200px}
+.opt{border-radius:18px;padding:16px;text-align:center;font-weight:800;font-size:18px;cursor:pointer;border:3px solid transparent}.opt.sel{border-color:#7cc4ff}
+.ok{color:#2f8f5b;font-weight:800}.small{font-size:14px;opacity:.85}
+.tag{display:inline-block;background:var(--g);border-radius:10px;padding:2px 8px;font-size:13px;margin-right:4px}
+</style></head><body>
+<nav id="nav"></nav>
+<main>
+<section id="s0" class="on">
+<h2>🔍 Білу: Қайсысы үлкейткенде бұзылады?</h2>
+<p>Төмендегі жүгірткіні <b>оңға қарай</b> тарт да, екі суретке мұқият қара! 👀</p>
+<div class="row">
+<div><div class="box"><canvas id="cv" width="24" height="24" style="width:150px;height:150px"></canvas></div><div class="lab" style="color:#d96a8a">🧩 Растрлық сурет</div><div class="lab small" id="q1">Сапасы: жақсы ✅</div></div>
+<div><div class="box"><svg id="sv" viewBox="0 0 24 24" style="width:150px;height:150px"></svg></div><div class="lab" style="color:#3a9d6a">📐 Векторлық сурет</div><div class="lab small" id="q2">Сапасы: жақсы ✅</div></div>
+</div>
+<div class="card c3"><b>🔎 Жақындату:</b> <span id="zv">1×</span><input type="range" id="zm" min="1" max="10" step="0.1" value="1"></div>
+<div class="card c2">Қорытынды: растрлық сурет өте үлкейгенде «бұлдырап» кетеді, ал векторлық сурет әрдайым тап-таза! ✨</div>
+</section>
+
+<section id="s1">
+<h2>📖 Түсіну: Презентация</h2>
+<div id="slides"></div>
+<div style="text-align:center;margin-top:10px"><button class="btn b" onclick="go(-1)">⬅️ Артқа</button> <b id="sc"></b> <button class="btn" onclick="go(1)">Алға ➡️</button></div>
+</section>
+
+<section id="s2">
+<h2>🧐 Талдау: Салыстыру кестесі (жұппен)</h2>
+<p>Екі графиканың белгілерін талдап, кестені толтырыңдар. Жауап жазыңдар да «Жіберу» батырмасын басыңдар.</p>
+<div class="card c4"><input type="text" id="an_n" placeholder="Жұптың аты-жөні (мысалы: Айдос және Аружан)"></div>
+<table><tr><th></th><th>🧩 Растрлық</th><th>📐 Векторлық</th></tr>
+<tr><th>Құрамы</th><td><textarea id="a0"></textarea></td><td><textarea id="a1"></textarea></td></tr>
+<tr><th>Масштабтау</th><td><textarea id="a2"></textarea></td><td><textarea id="a3"></textarea></td></tr>
+<tr><th>Қолданылуы</th><td><textarea id="a4"></textarea></td><td><textarea id="a5"></textarea></td></tr>
+<tr><th>Форматтары</th><td><textarea id="a6"></textarea></td><td><textarea id="a7"></textarea></td></tr></table>
+<p><button class="btn" onclick="sendAn()">Жіберу ✅</button> <span id="an_ok" class="ok"></span></p>
+</section>
+
+<section id="s3">
+<h2>💻 Қолдану: Практикалық жұмыс</h2>
+<p>Тапсырмаларды өз компьютеріңде орында.</p>
+<div id="tasks"></div>
+</section>
+
+<section id="s4">
+<h2>🧠 Жинақтау: Топтық жұмыс</h2>
+<p>Мұғалім карточка береді. Топ графика түрін және түстік модельді таңдап, неліктен екенін дәлелдеп қорғайды.</p>
+<div class="card c5"><input type="text" id="g_n" placeholder="Топтың аты / оқушылар"></div>
+<div id="groups"></div>
+</section>
+
+<section id="s5">
+<h2>💬 Кері байланыс</h2>
+<div class="card c4"><input type="text" id="f_n" placeholder="Аты-жөнің"></div>
+<div class="fb">
+<div><div class="opt c2" data-v="Толық түсіндім">😄 Толық түсіндім</div></div>
+<div><div class="opt c3" data-v="Сұрағым бар">🙋 Сұрағым бар</div></div>
+<div><div class="opt c4" data-v="Қиындық туындады">😕 Қиындық туындады</div></div>
+</div>
+<div id="fbbox" style="display:none;margin-top:12px"><div class="card c1"><b id="fbt"></b><textarea id="f_t" placeholder="Өз ойыңды осы жерге жаз..."></textarea></div></div>
+<p><button class="btn" onclick="sendFb()">Жіберу ✅</button> <span id="f_ok" class="ok"></span></p>
+</section>
+
+<section id="s6">
+<h2>🏫 Мұғалім кабинеті</h2>
+<div id="lock"><p>Кодты енгізіңіз:</p><input type="text" id="pin" placeholder="Код" style="max-width:200px"> <button class="btn b" onclick="unlock()">Кіру</button><p class="small">Код: 1234</p></div>
+<div id="cab" style="display:none"></div>
+</section>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const tabs=[["Білу","c1"],["Түсіну","c2"],["Талдау","c3"],["Қолдану","c4"],["Жинақтау","c5"],["Кері байланыс","c6"]];
+const nav=$("nav");
+tabs.forEach((t,i)=>{const b=document.createElement("button");b.className=t[1];b.textContent=t[0];b.onclick=()=>show(i);nav.appendChild(b)});
+nav.insertAdjacentHTML("beforeend",'<span class="sp"></span>');
+const tb=document.createElement("button");tb.className="c7";tb.textContent="🏫 Мұғалім кабинеті";tb.onclick=()=>show(6);nav.appendChild(tb);
+function show(i){document.querySelectorAll("section").forEach((s,j)=>s.classList.toggle("on",i==j));[...nav.querySelectorAll("button")].forEach((b,j)=>b.classList.toggle("on",j==i));if(i==6)render()}
+show(0);
+
+// Білу
+const cols={sky:"#bfe6ff",sun:"#ffe27a",ray:"#ffc48a",gr:"#b9ecb0",fl:"#ffb3cf"};
+const cx=$("cv").getContext("2d");
+cx.fillStyle=cols.sky;cx.fillRect(0,0,24,24);
+cx.fillStyle=cols.gr;cx.fillRect(0,17,24,7);
+cx.fillStyle=cols.ray;[[11,1,2,3],[11,9,2,3],[5,5,3,2],[16,5,3,2]].forEach(r=>cx.fillRect(...r));
+cx.fillStyle=cols.sun;cx.beginPath();cx.arc(12,7,3.4,0,7);cx.fill();
+cx.fillStyle=cols.fl;[[6,16],[12,18],[18,16]].forEach(p=>{cx.beginPath();cx.arc(p[0],p[1],1.8,0,7);cx.fill()});
+$("sv").innerHTML=`<rect width="24" height="24" fill="${cols.sky}"/><rect y="17" width="24" height="7" fill="${cols.gr}"/><g stroke="${cols.ray}" stroke-width="1.2" stroke-linecap="round"><path d="M12 1.5v2M12 10.5v2M5.5 7h2M16.5 7h2"/></g><circle cx="12" cy="7" r="3.4" fill="${cols.sun}"/><g fill="${cols.fl}"><circle cx="6" cy="16" r="1.8"/><circle cx="12" cy="18" r="1.8"/><circle cx="18" cy="16" r="1.8"/></g>`;
+$("zm").oninput=e=>{const z=+e.target.value;$("zv").textContent=z.toFixed(1)+"×";
+$("cv").style.transform=$("sv").style.transform="scale("+z+")";
+const b=Math.min(z-1,6)*1.6;$("cv").style.filter="blur("+b+"px)";
+$("q1").textContent=z<2?"Сапасы: жақсы ✅":z<4?"Сапасы: нашарлап барады 😟":"Сапасы: бұлдыр, пиксельдер көрінді! ❌";
+$("q2").textContent="Сапасы: әрдайым тап-таза ✅"};
+
+// Презентация
+const pxs=()=>{const c=["#ffd1dc","#fff2a8","#c9f0ff","#d5f5d0","#e6d9ff"];return Array.from({length:32},()=>`<i style="background:${c[Math.random()*5|0]}"></i>`).join("")};
+const sl=[
+["c1","🎨","Графика әлемі!","Суреттер екі түрлі болады. Қайсысы екенін бірге білейік!"],
+["c4","🧩","Растрлық графика","<b>Пиксельдерден</b> тұрады. Пиксель — кішкентай түсті шаршы.<br><span class='px'>"+pxs()+"</span>"],
+["c3","🔍","Үлкейткенде не болады?","Растрлық сурет үлкейгенде сапасы <b>төмендейді</b>: шаршылар көрініп, сурет бұлдырайды 😟"],
+["c2","📐","Векторлық графика","<b>Математикалық формулалар мен фигуралардан</b> тұрады: сызық, шеңбер, төртбұрыш.<br><span class='big'>⭕🔺🟦</span>"],
+["c2","✨","Векторлық сурет үлкейгенде","Сапасы <b>бұзылмайды</b>! Кішкентай болса да, үлкен плакат болса да тап-таза 😍"],
+["c1","📁","Форматтар","<span class='chip c4'>Растрлық: JPEG</span><span class='chip c4'>PNG</span><br><span class='chip c2'>Векторлық: SVG</span><span class='chip c2'>CDR</span>"],
+["c6","🖥️","RGB — экранға арналған","<b>R</b>ed, <b>G</b>reen, <b>B</b>lue — қызыл, жасыл, көк.<br>Монитор, телефон, планшет жарық арқылы түс шығарады.<br><span class='big'>🔴🟢🔵</span>"],
+["c5","🖨️","CMYK — баспаға арналған","Cyan, Magenta, Yellow, blacK. Принтер бояу арқылы басады.<br><span class='big'>🩵🩷💛</span>"],
+["c7","🤔","Қайсысын таңдаймыз?","Экранда көрсетеміз → <b>RGB</b><br>Қағазға басамыз → <b>CMYK</b><br>Лого, плакат → <b>вектор</b><br>Фотосурет → <b>растр</b>"],
+["c3","🏆","Жарайсың!","Енді өзің: растр немесе вектор? RGB немесе CMYK? Талдау бөліміне өт! 🚀"]];
+$("slides").innerHTML=sl.map((s,i)=>`<div class="slide ${s[0]}${i?"":" on"}"><div class="big">${s[1]}</div><h3>${s[2]}</h3><p>${s[3]}</p></div>`).join("");
+let cur=0;function go(d){const a=document.querySelectorAll(".slide");a[cur].classList.remove("on");cur=(cur+d+a.length)%a.length;a[cur].classList.add("on");$("sc").textContent=(cur+1)+" / "+a.length}
+$("sc").textContent="1 / "+sl.length;
+
+// Қолдану
+const T=["Paint-те қарапайым сурет салып, масштабтап (үлкейтіп) бұзылуын бақылау.","Inkscape/Word-те векторлық фигура салып, өлшемін өзгерту, нәтижесін А деңгейімен салыстыру.","Растрлық суретті векторлық редакторға қойып, масштабтау айырмашылығы бойынша қорытынды жазу."];
+$("tasks").innerHTML=T.map((t,i)=>`<div class="card c${i+1}"><h3 style="margin:0 0 6px">${i+1}-тапсырма</h3><p>${t}</p><input type="text" class="tn" placeholder="Аты-жөнің"><textarea class="tt" placeholder="Нәтижең / қорытындың"></textarea><button class="btn" onclick="sendTask(${i})">Орындадым ✅</button> <span class="ok" id="tk${i}"></span></div>`).join("");
+
+// Жинақтау
+const G=[["🌐","1-топ","Веб-сайтқа арналған баннер"],["📔","2-топ","Мектеп журналының мұқабасы"],["🏫","3-топ","Мектеп логотипі"],["🏙️","4-топ","Көшедегі үлкен бұрыштық билборд/плакат"]];
+$("groups").innerHTML=G.map((g,i)=>`<div class="card c${i+1}"><h3 style="margin:0">${g[0]} ${g[1]}: ${g[2]}</h3><div class="row" style="margin:8px 0"><select class="gt"><option>Графика түрі...</option><option>Растрлық</option><option>Векторлық</option></select><select class="gm"><option>Түстік модель...</option><option>RGB</option><option>CMYK</option></select></div><textarea class="gr" placeholder="Неліктен бұл таңдауды жасадыңдар? Дәлелдеңдер..."></textarea><button class="btn" onclick="sendG(${i})">Қорғау ✅</button> <span class="ok" id="gk${i}"></span></div>`).join("");
+
+// Кері байланыс
+let fv="";document.querySelectorAll(".opt").forEach(o=>o.onclick=()=>{document.querySelectorAll(".opt").forEach(x=>x.classList.remove("sel"));o.classList.add("sel");fv=o.dataset.v;$("fbbox").style.display="block";$("fbt").textContent=fv+" — өз ойыңды жаз:"});
+
+// Деректер
+let db=null,rows=[],local=[];
+(async()=>{try{db=await claude.use("db");if(db)db.collection("subs").onSnapshot(s=>{rows=s.docs.map(d=>d.data());if($("s6").classList.contains("on"))render()},()=>{})}catch(e){db=null}})();
+async function save(o){o.ts=Date.now();local.push(o);try{if(db)await db.collection("subs").add(o)}catch(e){}}
+function ok(id,m){$(id).textContent=m||"Жіберілді! 🎉"}
+function sendAn(){if(!$("an_n").value.trim())return ok("an_ok","Аты-жөнін жаз ✍️");save({k:"an",n:$("an_n").value,a:[0,1,2,3,4,5,6,7].map(i=>$("a"+i).value)});ok("an_ok")}
+function sendTask(i){const c=document.querySelectorAll("#tasks .card")[i],n=c.querySelector(".tn").value.trim();if(!n)return ok("tk"+i,"Аты-жөнін жаз ✍️");save({k:"tk",i,n,t:c.querySelector(".tt").value});ok("tk"+i)}
+function sendG(i){const c=document.querySelectorAll("#groups .card")[i],n=$("g_n").value.trim();if(!n)return ok("gk"+i,"Топ атын жаз ✍️");save({k:"g",i,n,ty:c.querySelector(".gt").value,m:c.querySelector(".gm").value,r:c.querySelector(".gr").value});ok("gk"+i)}
+function sendFb(){if(!$("f_n").value.trim()||!fv)return ok("f_ok","Атыңды жазып, бағанды таңда ✍️");save({k:"fb",n:$("f_n").value,v:fv,t:$("f_t").value});ok("f_ok")}
+
+// Мұғалім кабинеті
+function unlock(){if($("pin").value=="1234"){$("lock").style.display="none";$("cab").style.display="block";render()}else $("pin").value=""}
+const esc=s=>String(s??"").replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+function render(){const c=$("cab");if(c.style.display=="none")return;
+const all=(db?rows:local).slice().sort((a,b)=>a.ts-b.ts);
+const key={an:["Пиксельдерден тұрады","Формулалар мен фигуралардан тұрады","Үлкейткенде сапасы төмендейді","Сапасы бұзылмайды","Фотосурет, сурет","Логотип, плакат, сызба","JPEG, PNG","SVG, CDR"],g:["Растр + RGB","Растр + CMYK","Вектор + CMYK немесе RGB","Вектор + CMYK"]};
+const by=k=>all.filter(r=>r.k==k);
+let h=`<div class="card c1">📊 Жалпы жауап саны: <b>${all.length}</b>${db?"":" <span class='small'>(тек осы құрылғыда)</span>"}</div>`;
+h+=`<h3>🧐 Талдау</h3><div class="card c2 small">Дұрыс жауап: ${key.an.map((x,i)=>`<span class='tag'>${["Растр","Вектор"][i%2]}</span>${x}`).join("; ")}</div>`;
+h+=by("an").map(r=>`<div class="card c3"><b>${esc(r.n)}</b><br>${r.a.map((x,i)=>`<span class="tag">${["Растр","Вектор"][i%2]}</span>${esc(x)||"—"}`).join("<br>")}</div>`).join("")||"<p class='small'>Әзірше жауап жоқ</p>";
+h+=`<h3>💻 Қолдану</h3>`+(by("tk").map(r=>`<div class="card c4"><b>${esc(r.n)}</b> — ${r.i+1}-тапсырма ✅<br>${esc(r.t)}</div>`).join("")||"<p class='small'>Әзірше жауап жоқ</p>");
+h+=`<h3>🧠 Жинақтау</h3><div class="card c2 small">Үлгі: ${G.map((g,i)=>g[1]+" — "+key.g[i]).join("; ")}</div>`+(by("g").map(r=>`<div class="card c5"><b>${esc(r.n)}</b> (${G[r.i][1]}): ${esc(r.ty)} + ${esc(r.m)}<br>${esc(r.r)}</div>`).join("")||"<p class='small'>Әзірше жауап жоқ</p>");
+const f=by("fb"),cnt=v=>f.filter(r=>r.v==v).length;
+h+=`<h3>💬 Кері байланыс</h3><div class="card c1">😄 Толық түсіндім: <b>${cnt("Толық түсіндім")}</b> · 🙋 Сұрағым бар: <b>${cnt("Сұрағым бар")}</b> · 😕 Қиындық: <b>${cnt("Қиындық туындады")}</b></div>`+(f.map(r=>`<div class="card c6"><b>${esc(r.n)}</b> — ${esc(r.v)}<br>${esc(r.t)}</div>`).join("")||"<p class='small'>Әзірше жауап жоқ</p>");
+c.innerHTML=h}
+</script></body></html>
